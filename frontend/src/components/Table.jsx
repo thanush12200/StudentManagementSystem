@@ -1,0 +1,83 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+const Table = () => {
+  const [students, setStudents] = useState([]);
+  const navigate = useNavigate();
+  async function FetchStudents() {
+    try {
+      const response = await fetch("http://localhost:3000/api/students");
+      const data = await response.json();
+      console.log("All students data:", data);
+      console.log("Students array:", data.students);
+      setStudents(data.students || []);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  }
+  useEffect(() => {
+    FetchStudents();
+  }, []);
+  return (
+    <div className="card student-card">
+      <div
+        className="cardheader"
+        style={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h1 style={{ color: "#243046" }}>Students List</h1>
+        <button
+          className="create-student-btn"
+          onClick={() => navigate("/create-student")}
+        >
+          Create Student
+        </button>
+      </div>
+      {/* Table */}
+      <div className="table-container">
+        <table className="student-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.length > 0 ? (
+              students.map((student) => (
+                <tr key={student._id}>
+                  <td>{student.name}</td>
+                  <td>{student.age}</td>
+                  <td className="actions-cell">
+                    <button
+                      className="edit-btn"
+                      onClick={() => navigate(`/edit-student/${student._id}`)}
+                    >
+                      Edit
+                    </button>
+                    <button className="delete-btn">Delete</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="no-students">
+                  No students found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+export default Table;
+
+
+
+
+
+
