@@ -1,30 +1,56 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Table = () => {
   const [students, setStudents] = useState([]);
   const navigate = useNavigate();
-  async function FetchStudents() {
+
+ 
+  async function fetchStudents() {
     try {
       const response = await fetch("http://localhost:3000/api/students");
       const data = await response.json();
       console.log("All students data:", data);
-      console.log("Students array:", data.students);
       setStudents(data.students || []);
     } catch (error) {
       console.error("Error fetching students:", error);
     }
   }
+
+  
+  async function handleDelete(id) {
+    try {
+      if (window.confirm("Are you sure you want to delete this student?")) {
+        const response = await fetch(`http://localhost:3000/api/students/${id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json(); 
+
+        if (data.success) {
+          window.alert("Student deleted successfully!");
+          fetchStudents(); 
+        } else {
+          window.alert(data.message || "Failed to delete student.");
+        }
+      }
+    } catch (error) {
+      window.alert("Error deleting student.");
+      console.error("Delete error:", error);
+    }
+  }
+
+  
   useEffect(() => {
-    FetchStudents();
+    fetchStudents();
   }, []);
+
   return (
     <div className="card student-card">
       <div
         className="cardheader"
-        style={{
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+        style={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <h1 style={{ color: "#243046" }}>Students List</h1>
         <button
@@ -34,6 +60,7 @@ const Table = () => {
           Create Student
         </button>
       </div>
+
       {/* Table */}
       <div className="table-container">
         <table className="student-table">
@@ -57,7 +84,12 @@ const Table = () => {
                     >
                       Edit
                     </button>
-                    <button className="delete-btn">Delete</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(student._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))
@@ -74,10 +106,5 @@ const Table = () => {
     </div>
   );
 };
+
 export default Table;
-
-
-
-
-
-

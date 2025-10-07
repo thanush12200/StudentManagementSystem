@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Table from "./components/Table";
 import CreateStudent from "./components/CreateStudent";
+import EditStudent from "./components/EditStudent";
 function App() {
   return (
     <Routes>
@@ -20,6 +21,14 @@ function App() {
         <CreateStudent />
           </div>
        }
+       />
+       <Route
+        path="/edit-student/:id"
+        element = {
+          <div className="app-container">
+            <EditStudent />
+          </div>
+        }
        />
     </Routes>
   );

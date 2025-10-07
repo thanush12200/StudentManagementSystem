@@ -55,6 +55,32 @@ app.get('/api/students', async (req, res) => {
   }
 });
 
+app.get('/api/student/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findById(id);
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Student found",
+      student,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching student",
+      error: error.message,
+    });
+  }
+});
+
 
 app.post('/api/student', async (req,res) =>{
     try {
@@ -75,30 +101,61 @@ app.post('/api/student', async (req,res) =>{
 });
 
 
-app.put('/api/students/:id', async (req, res) => {
+app.put("/api/student/:id", async (req, res) => {
   try {
+    const { id } = req.params;
     const { name, age } = req.body;
+
     const updatedStudent = await Student.findByIdAndUpdate(
-      req.params.id,
+      id,
       { name, age },
-      { new: true } 
+      { new: true }
     );
-    if (!updatedStudent) 
-      return res.status(404).json({ message: 'Student not found' });
-    res.json(updatedStudent);
+
+    if (!updatedStudent) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Student updated successfully",
+      student: updatedStudent,
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error updating student",
+      error: error.message,
+    });
   }
 });
 
 
 app.delete('/api/students/:id', async (req, res) => {
   try {
-    const deletedStudent = await Student.findByIdAndDelete(req.params.id);
-    if (!deletedStudent) return res.status(404).json({ message: 'Student not found' });
-    res.json({ message: 'Student deleted successfully' });
+    const { id } = req.params;
+    const deletedStudent = await Student.findByIdAndDelete(id);
+
+    if (!deletedStudent) {
+      return res.status(404).json({
+        success: false,
+        message: 'Student not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Student deleted successfully',
+    });
   } catch (error) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting student',
+      error: error.message,
+    });
   }
 });
 

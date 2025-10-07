@@ -1,0 +1,64 @@
+/* Container styling */
+.create-student-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title styling */
+.create-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Form layout */
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+/* Input fields */
+.input-field {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  background-color: #ffffff; /* ✅ set input background to white */
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}
+
+/* Submit button */
+/* Submit button */
+.submit-btn {
+  padding: 10px 15px;
+  background-color: #FF4F81; /* ✅ changed to pink */
+  color: white;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #ff1493; /* ✅ darker pink on hover */
+  transform: translateY(-2px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
